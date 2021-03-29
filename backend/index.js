@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const config = require("./config")
 
 const mongoose = require('mongoose');
 
@@ -11,7 +12,6 @@ mongoose.connect(
     }
   );
 
-const port = 8000;
-app.listen(port, () => {
-  console.log('Server started on port: ' + port);
+app.listen(config.PORT, () => {
+  console.log('Server started on port: ' + PÖRT);
 });
