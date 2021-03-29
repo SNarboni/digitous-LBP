@@ -1,14 +1,13 @@
 const express = require('express');
 const app = express();
+const port = 8000;
+const mongoose = require('mongoose');
 const config = require("./config")
 const UserModel = require("./models/User")
-const produitModel= require("./models/produit");
-
-const mongoose = require('mongoose');
+const productModel= require("./models/product");
 
 const bodyParser = require("body-parser");
 const bcryptjs = require("bcryptjs");
-const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 mongoose.connect(
@@ -19,13 +18,9 @@ mongoose.connect(
     }
   );
 
-app.get("/",(req, res, nex)=>{
-  res.send("home")
-})
-
-app.get("/",(req, res, nex)=>{
-  res.send("home")
-})
+  app.use(express.static('public'));
+  app.use(bodyParser.json())
+  app.use(cors());
 
 
 app.listen(config.PORT, () => {
