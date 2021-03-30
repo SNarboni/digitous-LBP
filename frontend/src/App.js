@@ -1,13 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar/Navbar';
+import {BrowserRouter, Switch, Route} from 'react-router-dom'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-       <h1>COUCOU</h1>
-      </header>
-    </div>
+    <BrowserRouter>
+    <Navbar/>
+    <Switch>
+      <Route exact path='/' component={Home}/>
+      <Route/>
+      <Route/>
+    </Switch>
+    </BrowserRouter>
   );
 }
 
