@@ -36,35 +36,26 @@ mongoose.connect(
     }
   });
 
-/*
-  app.post("/login", async (req, res) => {
-    const user = await userModel
-      .findOne({
-        username: req.body.username,
-      })
-      .exec();
-  
-    if (bcryptjs.compareSync(req.body.password, user.password)) {
-      const token = jwt.sign(
-        {
-          id: user._id,
-        },
-        config.secret,
-        {
-          expiresIn: 3600,
-        }
-      );
-  
-      res.status(200).json({
-        message: "Connection ok",
-        token: token,
-      });
-    } else {
-      res.status(401).send("Invalid password");
-    }
-  });*/
+  app.post("/login", async (req, res, next) =>{
+    console.log(req.body);
 
+  const user =await UserModel.findOne({
+      email: req.body.email,
+    });
+    console.log(user);
 
+     if(user === null){
+       return res.status(401).send("une authentification est necessaire"); 
+     }
+
+    if(user.password !== req.body.password){
+       return res.status(400).send("mot de passe incorrect");
+      
+     }else{
+       return res.json(user);
+       console.log(req.body);
+     }
+  })
 
 app.listen(port, () => {
   console.log('Server started on port: ' + port);
