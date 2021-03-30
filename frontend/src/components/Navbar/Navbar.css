@@ -1,0 +1,19 @@
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+nav a {
+  color: #3b95df;
+  text-decoration: none;
+}
+nav a:hover {
+  color: #4de08a;
+  text-decoration: none;
+}
+nav a:focus {
+  color: #cf8c34;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=Navbar.css.map */
