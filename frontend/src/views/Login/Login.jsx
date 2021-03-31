@@ -6,13 +6,34 @@ import './Login.css';
 const Login = () => {
     const { register, errors, handleSubmit, formState } = useForm({});
     
-        const onSubmit = async(data)=>{
-             console.log(data);
-        }
+    const onSubmit =async (data)=>{
+    
+      delete data.password_repeat;
+      console.log('Received values of form: ', data);
+      fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then((response)=>{return response.json()})
+      
+      .then((response)=>{ 
+        console.log(response)
+        // if (response) {
+        //   const tokenObj = await response.json();
+        //   localStorage.setItem('token', tokenObj.token);
+        // //   history.push('/');
+        // }
+      }) 
+};
+
+
         const {isSubmitting}=formState;
-        console.log(onSubmit)
+        
     return (
-    <form id="login-box" onSubmit={e => e.preventDefault()}>
+    <form id="login-box" onSubmit={handleSubmit(onSubmit)}>
       <div className="left">
         <h1>Login</h1>
         <input 
@@ -26,6 +47,7 @@ const Login = () => {
         />
     
         {errors.email && <p className="alert">{errors.email.message}</p>}
+        
         <input
             name="password"
             type="password"

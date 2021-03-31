@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import {useForm} from 'react-hook-form';
+import { useHistory } from "react-router-dom";
 import './Signup.css';
 
 const Signup = () => {
@@ -7,27 +8,29 @@ const Signup = () => {
     const password = useRef({});
     password.current = watch("password", "");
 
+    const history = useHistory();
+
     const onSubmit =async (data)=>{
-        console.log(JSON.stringify(data));
-        // try {
+    
+            delete data.password_repeat;
+            console.log('Received values of form: ', data);
+            fetch('http://localhost:8000/signup', {
+              method: 'POST',
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            })
+            .then((response)=>{return response.JSON()})
             
-        //     delete data.password_repeat;
-        //     console.log('Received values of form: ', data);
-        //     const response = await fetch('place du server backend', {
-        //       method: 'POST',
-        //       headers: {
-        //         'content-type': 'application/json'
-        //       },
-        //       body: JSON.stringify(data)
-        //     });
-        //     if (response.ok) {
-        //       const tokenObj = await response.json();
-        //       localStorage.setItem('token', tokenObj.token);
-        //       history.push('/admin');
-        //     }
-        //   } catch (err) {
-        //     console.error(err)
-        // }
+            .then((response)=>{ 
+              console.log(response)
+              // if (response) {
+              //   const tokenObj = await response.json();
+              //   localStorage.setItem('token', tokenObj.token);
+              // //   history.push('/');
+              // }
+            }) 
     };
     const {isSubmitting}=formState;
     // console.log(onSubmit)
@@ -35,8 +38,9 @@ const Signup = () => {
         <form id="login-box" onSubmit={e => e.preventDefault()}>
   <div className="left">
     <h1>Sign up</h1>
-    
-    <input type="text" name="username" ref={register({required:true})}placeholder="Username" />
+    {/* <input type="file" name="image" ref={register({required:true})}placeholder="upload your profile picture" />
+    {errors.image && <p className="alert">This field is required</p>} */}
+    <input type="text" name="name" ref={register({required:true})}placeholder="name" />
     {errors.username && <p className="alert">This field is required</p>}
     <input 
         type="text" 
