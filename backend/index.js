@@ -46,21 +46,24 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
     })
    // console.log(user);
      if(user === null){
-       return res.status(404).send("l'utilisateur n'existe pas"); 
+      res.status(404).json({message : "l'utilisateur n'existe pas"}); 
      }
     if(user.password !== req.body.password){
-       return res.status(401).json("mot de passe incorrect");
+      res.status(401).json({message : "mot de passe incorrect"});
      }else{
 
        const token = jwt.sign({email: user.email}, jwtsecret,  {expiresIn: 3600 });
        console.log("token", token);
-       return res.json(token);
+        res.json({
+          token: token,
+          message: "tien le token"
+        });
        }
 
-   }catch (err){  
+   }catch (error){  
  
-    console.error(err);
-    res.status(404).send(err)
+    console.error(error);
+    res.status(404).json({error : error})
    }
 });
 

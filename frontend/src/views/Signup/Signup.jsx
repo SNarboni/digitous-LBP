@@ -1,14 +1,15 @@
 import React, { useRef } from 'react';
 import {useForm} from 'react-hook-form';
 import { useHistory } from "react-router-dom";
+
 import './Signup.css';
 
 const Signup = () => {
     const { register, errors, handleSubmit, watch, formState } = useForm({});
     const password = useRef({});
     password.current = watch("password", "");
-
     const history = useHistory();
+
 
     const onSubmit =async (data)=>{
     
@@ -21,7 +22,7 @@ const Signup = () => {
               },
               body: JSON.stringify(data)
             })
-            .then((response)=>{return response.JSON()})
+            .then((response)=>{return response.json()})
             
             .then((response)=>{ 
               console.log(response)
