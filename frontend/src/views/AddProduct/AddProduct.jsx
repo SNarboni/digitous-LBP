@@ -23,7 +23,7 @@ const AddProduct = () => {
   return (
     <form className="container py-5" onSubmit={handleSubmit(onSubmit)}>
       <h1>Ajouter un produit</h1>
-      {isSubmitSuccessful && <div className="alert alert-success">Merci pour votre inscription</div>}
+      {isSubmitSuccessful && <div className="alert alert-success d-flex justify-content-center align-items-center"><h1>Merci pour votre inscription</h1></div>}
       <div className="row">
         <div className="col-md-6 form-group">
           <label htmlFor="username">username</label>
