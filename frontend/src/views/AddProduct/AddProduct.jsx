@@ -1,63 +1,97 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
-
-const wait = function (duration = 1000){
-    return new Promise((resolve) => {
-        window.setTimeout(resolve, duration)
-    })
-}
+const wait = function (duration = 1000) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, duration);
+  });
+};
 
 const AddProduct = () => {
   const { register, handleSubmit, formState, errors } = useForm({
-      mode: 'onTouched'
+    mode: "onTouched",
   });
-    const {isSubmitting, isSubmitted,isSubmitSuccessful} = formState
+  const { isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
+
+  const history = useHistory();
 
   const onSubmit = async (data) => {
-    await wait(2000)
+    await wait(2000);
+    fetch("http://localhost:8000/AddProduct", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  console.log(errors)
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      wait(3000).then(() => {
+        history.push("/ProfilePage");
+      });
+    }
+  }, [isSubmitSuccessful]);
 
   return (
     <form className="container py-5" onSubmit={handleSubmit(onSubmit)}>
       <h1>Ajouter un produit</h1>
-      {isSubmitSuccessful && <div className="alert alert-success d-flex justify-content-center align-items-center"><h1>Merci pour votre inscription</h1></div>}
+      {isSubmitSuccessful && (
+        <div className="alert alert-success d-flex justify-content-center align-items-center">
+          <h1>L'article a bien été ajouté</h1>
+        </div>
+      )}
       <div className="row">
         <div className="col-md-6 form-group">
-          <label htmlFor="username">username</label>
+          <label htmlFor="name">name</label>
           <input
             type="text"
             className="form-control"
-            id="username"
-            name="username"
-            ref={register({required : "vous devez entrer un nom d'utilisateur"})}
+            id="name"
+            name="name"
+            ref={register({
+              required: "vous devez entrer un nom",
+            })}
           />
-            {errors.username && <span>{errors.username.message}</span>}
+          {errors.name && <span>{errors.name.message}</span>}
         </div>
         <div className="col-md-6 form-group">
-          <label htmlFor="email">email</label>
+          <label htmlFor="price">price</label>
           <input
-            type="text"
+            type="number"
             className="form-control"
-            id="email"
-            name="email"
-            ref={register({required : true})}
+            id="price"
+            name="price"
+            ref={register({ required: "vous devez entrer un prix" })}
           />
+          {errors.price && <span>{errors.price.message}</span>}
         </div>
       </div>
       <div className="form-group">
-        <label htmlFor="password">password</label>
+        <label htmlFor="description">description</label>
         <input
-          type="password"
+          type="text"
           className="form-control"
-          id="password"
-          name="password"
-          ref={register({required : true})}
+          id="description"
+          name="description"
+          ref={register({ required: "vous devez entrer une description" })}
         />
+        {errors.description && <span>{errors.description.message}</span>}
       </div>
-      <button disabled={isSubmitting} className="btn btn-primary">Ajouter</button>
+      <button disabled={isSubmitting} className="btn btn-primary">
+        Ajouter
+      </button>
     </form>
   );
 };
