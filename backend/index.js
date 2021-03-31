@@ -23,7 +23,7 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
   );
 
 
-  // app.use(express.static('public'));
+ app.use(express.static('public'));
   app.use(bodyParser.json());
   app.use(cors());
 
@@ -74,6 +74,8 @@ app.get("/admin", (req, res)=>{
   res.send(req.headers.autorization);
 })
 
+app.post("/AddProduct")
+   
 
 
 app.listen(port, () => {
