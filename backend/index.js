@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 
 const jwt = require("jsonwebtoken");
 const { JsonWebTokenError } = require('jsonwebtoken');
+const jwtsecret = "unsecretcool321";
 const bcrypt = require("bcrypt");
 
 
@@ -51,7 +52,7 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
        return res.status(401).json("mot de passe incorrect");
      }else{
 
-       const token = jwt.sign({email: user.email}, "unsecretcool321",  {expiresIn: 3600 });
+       const token = jwt.sign({email: user.email}, jwtsecret,  {expiresIn: 3600 });
        console.log("token", token);
        return res.json(token);
        }
@@ -64,7 +65,9 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
 });
 
 app.get("/admin", (req, res)=>{
-  console.log(req.headers.autorization);
+  const verifToken = req.headers.autorization.split("")[1];
+  const verification = jwt.verify(verifToken, jwtsecret);
+  console.log(verification);
   res.send(req.headers.autorization);
 })
 
