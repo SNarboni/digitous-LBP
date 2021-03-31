@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const cors = require ("cors");
 const config = require("./config");
 const UserModel = require("./models/User");
-const productModel= require("./models/product");
+const ProductModel= require("./models/Product");
 
 const bodyParser = require("body-parser");
 
@@ -74,7 +74,16 @@ app.get("/admin", (req, res)=>{
   res.send(req.headers.autorization);
 })
 
-app.post("/AddProduct")
+app.post("/AddProduct", async (req, res, next)=> {
+  try {
+      const newProduct = new ProductModel(req.body)
+      await newProduct.save()
+      res.send(newProduct)
+  } catch (err) {
+    res.status(400).send(err)
+    console.error(err)
+  }
+});
    
 
 

@@ -17,11 +17,10 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
 
-    // phone_Number:String,
+    phoneNumber: String,
 
     city: {
         type: String,
-        
     },
 });
 
