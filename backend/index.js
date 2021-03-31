@@ -64,8 +64,8 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
 });
 
 app.get("/admin", (req, res)=>{
-  console.log(req.header.Autorization);
-  res.send(req.header.Autorization);
+  console.log(req.headers.autorization);
+  res.send(req.headers.autorization);
 })
 
 
