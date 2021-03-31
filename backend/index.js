@@ -3,30 +3,32 @@ const app = express();
 const port = 8000;
 const mongoose = require('mongoose');
 const cors = require ("cors");
-const config = require("./config")
-const UserModel = require("./models/User")
+const config = require("./config");
+const UserModel = require("./models/User");
 const productModel= require("./models/product");
 
 const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-mongoose.connect(
-    "mongodb://localhost:27017/lebonplan",
-    { useNewUrlParser: true, useUnifiedTopology: true },
+const jwt = require("jsonwebtoken");
+const { JsonWebTokenError } = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+
+
+mongoose.connect( "mongodb://localhost:27017/lebonplan",
+{ useNewUrlParser: true, useUnifiedTopology: true },
     () => {
       console.log("DB connected");
     }
   );
 
+
   // app.use(express.static('public'));
   app.use(bodyParser.json());
-  // app.use(cors());
+  app.use(cors());
 
 
   app.post("/signup", async (req, res, next)=> {
     try {
-        console.log(req.body)
         const newUser = new UserModel(req.body)
         await newUser.save()
         res.send(newUser)
@@ -37,25 +39,36 @@ mongoose.connect(
   });
 
   app.post("/login", async (req, res, next) =>{
-    console.log(req.body);
-
-  const user =await UserModel.findOne({
+   try{
+    const user =await UserModel.findOne({
       email: req.body.email,
-    });
-    console.log(user);
-
+    })
+   // console.log(user);
      if(user === null){
-       return res.status(401).send("une authentification est necessaire"); 
+       return res.status(404).send("l'utilisateur n'existe pas"); 
      }
-
     if(user.password !== req.body.password){
-       return res.status(400).send("mot de passe incorrect");
-      
+       return res.status(401).json("mot de passe incorrect");
      }else{
-       return res.json(user);
-       console.log(req.body);
-     }
-  })
+
+       const token = jwt.sign({email: user.email}, "unsecretcool321",  {expiresIn: 3600 });
+       console.log("token", token);
+       return res.json(token);
+       }
+
+   }catch (err){  
+ 
+    console.error(err);
+    res.status(404).send(err)
+   }
+});
+
+app.get("/admin", (req, res)=>{
+  console.log(req.headers.autorization);
+  res.send(req.headers.autorization);
+})
+
+
 
 app.listen(port, () => {
   console.log('Server started on port: ' + port);
