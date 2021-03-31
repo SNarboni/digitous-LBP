@@ -8,7 +8,7 @@ const Signup = () => {
     password.current = watch("password", "");
 
     const onSubmit =async (data)=>{
-        await console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data));
         // try {
             
         //     delete data.password_repeat;

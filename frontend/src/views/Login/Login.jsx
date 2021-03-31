@@ -6,7 +6,9 @@ import './Login.css';
 const Login = () => {
     const { register, errors, handleSubmit, formState } = useForm({});
     
-        const onSubmit =data=>console.log(data);
+        const onSubmit = async(data)=>{
+             console.log(data);
+        }
         const {isSubmitting}=formState;
         console.log(onSubmit)
     return (
