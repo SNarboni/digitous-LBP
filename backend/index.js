@@ -8,10 +8,11 @@ const UserModel = require("./models/User");
 const productModel= require("./models/product");
 
 const bodyParser = require("body-parser");
-//const { JsonWebTokenError } = require('jsonwebtoken');
-//const bcrypt = require("bcrypt");
 
 const jwt = require("jsonwebtoken");
+const { JsonWebTokenError } = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+
 
 mongoose.connect( "mongodb://localhost:27017/lebonplan",
 { useNewUrlParser: true, useUnifiedTopology: true },
@@ -20,14 +21,14 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
     }
   );
 
+
   // app.use(express.static('public'));
   app.use(bodyParser.json());
-  // app.use(cors());
+  app.use(cors());
 
 
   app.post("/signup", async (req, res, next)=> {
     try {
-        console.log(req.body)
         const newUser = new UserModel(req.body)
         await newUser.save()
         res.send(newUser)
@@ -48,17 +49,24 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
      }
     if(user.password !== req.body.password){
        return res.status(401).json("mot de passe incorrect");
-     }else{  
+     }else{
+
        const token = jwt.sign({email: user.email}, "unsecretcool321",  {expiresIn: 3600 });
-       return res.json(user);
-      
-     }
+       console.log("token", token);
+       return res.json(token);
+       }
+
    }catch (err){  
  
     console.error(err);
     res.status(404).send(err)
    }
 });
+
+app.get("/admin", (req, res)=>{
+  console.log(req.header.Autorization);
+  res.send(req.header.Autorization);
+})
 
 
 
