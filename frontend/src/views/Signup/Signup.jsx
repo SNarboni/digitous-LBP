@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {useForm} from 'react-hook-form';
 import { useHistory } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const Signup = () => {
     const {isSubmitting}=formState;
     // console.log(onSubmit)
     return (
-        <form id="login-box" onSubmit={e => e.preventDefault()}>
+        <form id="login-box" onSubmit={handleSubmit(onSubmit)}>
   <div className="left">
     <h1>Sign up</h1>
     {/* <input type="file" name="image" ref={register({required:true})}placeholder="upload your profile picture" />
