@@ -29,6 +29,7 @@ const Login = () => {
           setWrongSubmit(null);
           localStorage.setItem("token", response.token);
           history.push("/");
+          history.push(`/user/${response.id}`);
         }else {
           setWrongSubmit(response.message);
        }
@@ -37,7 +38,6 @@ const Login = () => {
       })
   };
   
-  console.log(JSON.stringify(wrongSubmit));
 
   const { isSubmitting } = formState;
 
