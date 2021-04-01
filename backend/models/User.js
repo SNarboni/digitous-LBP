@@ -22,6 +22,7 @@ const UserSchema = new mongoose.Schema({
     city: {
         type: String,
     },
+    profilePicture:String
 });
 
 const UserModel = mongoose.model("User", UserSchema);

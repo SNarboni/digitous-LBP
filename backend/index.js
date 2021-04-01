@@ -3,17 +3,18 @@ const app = express();
 const port = 8000;
 const mongoose = require('mongoose');
 const cors = require ("cors");
+const fs = require("fs");
+const multer  = require('multer');
+const path = require("path");
+const upload = multer({ dest: 'public/uploads/' });
 const config = require("./config");
 const UserModel = require("./models/User");
 const ProductModel= require("./models/Product");
-
 const bodyParser = require("body-parser");
-
 const jwt = require("jsonwebtoken");
 const { JsonWebTokenError } = require('jsonwebtoken');
 const jwtsecret = "unsecretcool321";
-const bcrypt = require("bcrypt");
-
+const bcryptjs = require("bcryptjs");
 
 mongoose.connect( "mongodb://localhost:27017/lebonplan",
 { useNewUrlParser: true, useUnifiedTopology: true },
@@ -29,10 +30,13 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
 
 
   app.post("/signup", async (req, res, next)=> {
+
     try {
         const newUser = new UserModel(req.body)
-        await newUser.save()
+       const cryptPassword = {password: bcryptjs.hashSync(req.body.password)}
+        await newUser.save(cryptPassword)
         res.send(newUser)
+        res.send("Utilisateur enregistré") 
     } catch (err) {
       res.status(400).send(err)
       console.error(err)
@@ -84,6 +88,12 @@ app.post("/AddProduct", async (req, res, next)=> {
     console.error(err)
   }
 });
+
+// app.post('/upload', upload.single('img'),  (req, res) => {
+//   console.log(req.file);
+//   fs.renameSync(req.file.path, path.join(req.file.destination, req.file.originalname));
+//   res.send("ok");
+// });
    
 
 
