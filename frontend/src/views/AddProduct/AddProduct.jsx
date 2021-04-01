@@ -12,7 +12,7 @@ const AddProduct = () => {
   const { register, handleSubmit, formState, errors } = useForm({
     mode: "onTouched",
   });
-  const { isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
+  const { isSubmitting, isSubmitSuccessful } = formState;
 
   const history = useHistory();
 

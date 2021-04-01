@@ -105,6 +105,7 @@ const Home = () => {
           <li><Link to="/AllProductsPage/Poitou-Charentes" id="list-T">Poitou-Charentes</Link></li>
           <li><Link to="/AllProductsPage/Provence-Alpes-Côte-Azur" id="list-U">Provence-Alpes-Côte d'Azur</Link></li>
           <li><Link to="/AllProductsPage/Rhône-Alpes" id="list-V">Rhône-Alpes</Link></li>
+          <li><Link to="/AllProductsPage/All" id="list-W">ALL</Link></li>
         </ul>
       </div>
     </div>
