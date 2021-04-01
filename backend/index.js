@@ -30,13 +30,25 @@ mongoose.connect( "mongodb://localhost:27017/lebonplan",
   app.use(cors());
 
 
-  app.post("/signup", async (req, res, next)=> {
+  app.post("/signup", upload.single("profilePicture"),async (req, res, next)=> {
 
     try {
-        const newUser = new UserModel(req.body)
-       const cryptPassword = {password: bcryptjs.hashSync(req.body.password)}
-        await newUser.save(cryptPassword)
-        res.send(newUser)
+        if(req.file){
+          let myPP=fs.renameSync(
+            req.file.path,
+            path.join(req.file.destination, `${req.body.name}.png`)
+          )
+        }
+        const newUser = new UserModel(
+          {
+            email:req.body.email,
+            password: bcryptjs.hashSync(req.body.password),
+            name:req.body.name,
+            profilePicture:`uploads/${req.body.name}.png`
+
+          }
+        )
+        await newUser.save()
         res.send("Utilisateur enregistré") 
     } catch (err) {
       res.status(400).send(err)
@@ -90,11 +102,11 @@ app.post("/AddProduct", async (req, res, next)=> {
   }
 });
 
-// app.post('/upload', upload.single('img'),  (req, res) => {
-//   console.log(req.file);
-//   fs.renameSync(req.file.path, path.join(req.file.destination, req.file.originalname));
-//   res.send("ok");
-// });
+app.post('/upload', upload.single('img'),  (req, res) => {
+  console.log(req.file);
+  fs.renameSync(req.file.path, path.join(req.file.destination, req.file.originalname));
+  res.send("ok");
+});
    
 
 
