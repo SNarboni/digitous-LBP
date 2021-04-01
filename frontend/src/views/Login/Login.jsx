@@ -1,11 +1,12 @@
-import React from "react";
+import React,{ useState} from "react";
 import { useForm } from "react-hook-form";
 import "./Login.css";
 import { useHistory } from "react-router-dom";
 
 
 const Login = () => {
-  const { register, errors, handleSubmit, formState } = useForm({});
+  const [wrongSubmit,setWrongSubmit]=useState();
+  const { register, errors, handleSubmit, formState } = useForm();
   const history = useHistory();
 
   const onSubmit = async (data) => {
@@ -25,13 +26,18 @@ const Login = () => {
       .then((response) => {
         console.log(response);
         if (response.message === "tien le token") {
+          setWrongSubmit(null);
           localStorage.setItem("token", response.token);
           history.push("/");
-        }
+        }else {
+          setWrongSubmit(response.message);
+       }
       }).catch((error) =>{
         console.log(error)
       })
   };
+  
+  console.log(JSON.stringify(wrongSubmit));
 
   const { isSubmitting } = formState;
 
@@ -67,6 +73,7 @@ const Login = () => {
           placeholder="Password"
         />
         {errors.password && <p>{errors.password.message}</p>}
+        {wrongSubmit && <p>{wrongSubmit}</p>}
 
         <input
           type="submit"

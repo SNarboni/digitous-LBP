@@ -12,7 +12,7 @@ const AddProduct = () => {
   const { register, handleSubmit, formState, errors } = useForm({
     mode: "onTouched",
   });
-  const { isSubmitting, isSubmitted, isSubmitSuccessful } = formState;
+  const { isSubmitting, isSubmitSuccessful } = formState;
 
   const history = useHistory();
 
@@ -48,8 +48,11 @@ const AddProduct = () => {
     <form className="container py-5" onSubmit={handleSubmit(onSubmit)}>
       <h1>Ajouter un produit</h1>
       {isSubmitSuccessful && (
-        <div className="alert alert-success d-flex justify-content-center align-items-center">
+        <div className="alert alert-success d-flex justify-content-center align-items-center text-center">
+          <div>
           <h1>L'article a bien été ajouté</h1>
+          <p>Vous allez etre rediriger</p>
+          </div>
         </div>
       )}
       <div className="row">
@@ -78,7 +81,7 @@ const AddProduct = () => {
           {errors.price && <span>{errors.price.message}</span>}
         </div>
       </div>
-      <div className="form-group">
+      <div className="col-md-6 form-group">
         <label htmlFor="description">description</label>
         <input
           type="text"
@@ -88,6 +91,17 @@ const AddProduct = () => {
           ref={register({ required: "vous devez entrer une description" })}
         />
         {errors.description && <span>{errors.description.message}</span>}
+      </div>
+      <div className="col-md-6 form-group">
+        <label htmlFor="city">city</label>
+        <input
+          type="text"
+          className="form-control"
+          id="city"
+          name="city"
+          ref={register({ required: "vous devez entrer une ville" })}
+        />
+        {errors.city && <span>{errors.city.message}</span>}
       </div>
       <button disabled={isSubmitting} className="btn btn-primary">
         Ajouter
