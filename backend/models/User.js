@@ -17,12 +17,12 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
 
-    // phone_Number:String,
+    phoneNumber: String,
 
     city: {
         type: String,
-        
     },
+    profilePicture:String
 });
 
 const UserModel = mongoose.model("User", UserSchema);
